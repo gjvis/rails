@@ -263,7 +263,7 @@ module ActiveRecord
         def default_sequence_name(table_name, pk = nil) #:nodoc:
           result = serial_sequence(table_name, pk || StringPool::ID)
           return nil unless result
-          result.split('.').last
+          result.split(StringPool::DOT).last
         rescue ActiveRecord::StatementInvalid
           "#{table_name}_#{pk || StringPool::ID}_seq"
         end
@@ -322,9 +322,9 @@ module ActiveRecord
               SELECT attr.attname,
                 CASE
                   WHEN pg_get_expr(def.adbin, def.adrelid) !~* 'nextval' THEN NULL
-                  WHEN split_part(pg_get_expr(def.adbin, def.adrelid), '''', 2) ~ '.' THEN
+                  WHEN split_part(pg_get_expr(def.adbin, def.adrelid), '''', 2) ~ StringPool::DOT THEN
                     substr(split_part(pg_get_expr(def.adbin, def.adrelid), '''', 2),
-                           strpos(split_part(pg_get_expr(def.adbin, def.adrelid), '''', 2), '.')+1)
+                           strpos(split_part(pg_get_expr(def.adbin, def.adrelid), '''', 2), StringPool::DOT)+1)
                   ELSE split_part(pg_get_expr(def.adbin, def.adrelid), '''', 2)
                 END
               FROM pg_class       t
