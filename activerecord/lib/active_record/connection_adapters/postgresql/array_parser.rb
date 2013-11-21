@@ -43,7 +43,7 @@ module ActiveRecord
             is_escaping  = false
             is_quoted    = false
             was_quoted   = false
-            current_item = ''
+            current_item = StringPool::EMPTY
 
             local_index = index
             while local_index
@@ -68,7 +68,7 @@ module ActiveRecord
                     is_escaping = true
                   when COMMA
                     add_item_to_array(array, current_item, was_quoted)
-                    current_item = ''
+                    current_item = StringPool::EMPTY
                     was_quoted = false
                   when DOUBLE_QUOTE
                     is_quoted = true
