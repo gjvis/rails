@@ -11,7 +11,7 @@ module ActiveRecord::Associations::Builder
         end
 
         def join_table
-          @join_table ||= [@lhs_class.table_name, klass.table_name].sort.join("\0").gsub(/^(.*_)(.+)\0\1(.+)/, '\1\2_\3').gsub("\0", "_")
+          @join_table ||= [@lhs_class.table_name, klass.table_name].sort.join("\0").gsub(/^(.*_)(.+)\0\1(.+)/, '\1\2_\3').gsub("\0", StringPool::UNDERSCORE)
         end
 
         private
@@ -82,7 +82,7 @@ module ActiveRecord::Associations::Builder
 
     def middle_reflection(join_model)
       middle_name = [lhs_model.name.downcase.pluralize,
-                     association_name].join('_').gsub(/::/, '_').to_sym
+                     association_name].join(StringPool::UNDERSCORE).gsub(/::/, StringPool::UNDERSCORE).to_sym
       middle_options = middle_options join_model
 
       HasMany.create_reflection(lhs_model,
